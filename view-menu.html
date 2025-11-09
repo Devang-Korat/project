@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreshFeat | View Menu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .navbar {
+            background-color: #0b0d17;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: #ffcc00 !important;
+            font-size: 1.7rem;
+            letter-spacing: 1px;
+        }
+
+        .navbar-nav {
+            margin: 0 auto;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff;
+            font-weight: 500;
+            margin: 0 15px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background-color: #ffcc00;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover::after,
+        .navbar-nav .nav-link.active::after {
+            width: 100%;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ffcc00;
+        }
+
+        .btn-cart {
+            background-color: #ffcc00;
+            color: #000;
+            font-weight: 600;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cart:hover {
+            background-color: #e6b800;
+            transform: scale(1.05);
+        }
+
+        .restaurant-header {
+            background: url('p6.jpg') center center/cover no-repeat;
+            height: 220px;
+            border-radius: 12px;
+            position: relative;
+            color: white;
+            overflow: hidden;
+        }
+
+        .restaurant-header::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .restaurant-info {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 2;
+            width: 100%;
+        }
+
+
+        .restaurant-info h3 {
+            font-weight: 700;
+        }
+
+        .restaurant-info p {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .restaurant-info .badge {
+            background-color: #ffcc00;
+            color: #000;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .menu-categories {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .menu-categories .btn {
+            background-color: #ffcc00;
+            color: #000;
+            font-weight: 600;
+            border: none;
+            margin: 5px;
+            padding: 8px 18px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-categories .btn:hover {
+            background-color: #e6b800;
+            transform: scale(1.05);
+        }
+
+        .menu-item {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .menu-item img {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .menu-details h5 {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .menu-details p {
+            margin: 0;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .menu-details .price {
+            color: #b36b00;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quantity-control button {
+            background-color: #ffcc00;
+            border: none;
+            color: #000;
+            font-weight: 700;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            transition: 0.2s;
+        }
+
+        .quantity-control button:hover {
+            background-color: #e6b800;
+            transform: scale(1.05);
+        }
+
+        body {
+            background-color: #f5f6f8;
+        }
+
+        footer {
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="#">FreshFeat</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="restaurants.html">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link" href="my-orders.html">My Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+                <div class="d-lg-none text-center mt-3">
+                    <a href="view-cart.html" class="btn btn-cart w-75">View Cart</a>
+                </div>
+            </div>
+            <div class="d-none d-lg-block">
+                <a href="view-cart.html" class="btn btn-cart d-none d-lg-block">View Cart</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Restaurant Header -->
+    <div class="container mt-4">
+        <div class="restaurant-header">
+            <div class="restaurant-info">
+                <h3>Pizza Palace</h3>
+                <p>Italian • Pizza • Pasta</p>
+                <p><span class="badge">4.8 ★</span> • 25–35 min • $3.99 delivery</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Category Buttons -->
+    <div class="menu-categories">
+        <button class="btn">Pizzas</button>
+        <button class="btn">Pasta</button>
+        <button class="btn">Appetizers</button>
+        <button class="btn">Salads</button>
+        <button class="btn">Desserts</button>
+    </div>
+
+    <!-- Menu Items -->
+    <div class="container mt-3 mb-5">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="menu-item">
+                    <div class="d-flex align-items-center">
+                        <img src="z1.jpg" alt="Margherita Pizza">
+                        <div class="ms-3 menu-details">
+                            <h5>Margherita Pizza</h5>
+                            <p>Fresh tomatoes, mozzarella, basil</p>
+                            <div class="price">$14.99</div>
+                        </div>
+                    </div>
+                    <div class="quantity-control">
+                        <button>-</button>
+                        <span>0</span>
+                        <button>+</button>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="d-flex align-items-center">
+                        <img src="z2.jpg" alt="Veggie Delight">
+                        <div class="ms-3 menu-details">
+                            <h5>Veggie Delight</h5>
+                            <p>Bell peppers, onions, olives, mushrooms</p>
+                            <div class="price">$13.99</div>
+                        </div>
+                    </div>
+                    <div class="quantity-control">
+                        <button>-</button>
+                        <span>0</span>
+                        <button>+</button>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="d-flex align-items-center">
+                        <img src="z3.jpg" alt="Hawaiian Pizza">
+                        <div class="ms-3 menu-details">
+                            <h5>Hawaiian Pizza</h5>
+                            <p>Ham, pineapple, mozzarella</p>
+                            <div class="price">$15.49</div>
+                        </div>
+                    </div>
+                    <div class="quantity-control">
+                        <button>-</button>
+                        <span>0</span>
+                        <button>+</button>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="d-flex align-items-center">
+                        <img src="z4.jpg" alt="Pasta Alfredo">
+                        <div class="ms-3 menu-details">
+                            <h5>Pasta Alfredo</h5>
+                            <p>Creamy alfredo sauce with fettuccine</p>
+                            <div class="price">$12.99</div>
+                        </div>
+                    </div>
+                    <div class="quantity-control">
+                        <button>-</button>
+                        <span>0</span>
+                        <button>+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="menu-item">
+                    <div class="d-flex align-items-center">
+                        <img src="z5.jpg" alt="Pepperoni Pizza">
+                        <div class="ms-3 menu-details">
+                            <h5>Pepperoni Pizza</h5>
+                            <p>Pepperoni, mozzarella, tomato sauce</p>
+                            <div class="price">$16.99</div>
+                        </div>
+                    </div>
+                    <div class="quantity-control">
+                        <button>-</button>
+                        <span>0</span>
+                        <button>+</button>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="d-flex align-items-center">
+                        <img src="z6.jpg" alt="BBQ Chicken Pizza">
+                        <div class="ms-3 menu-details">
+                            <h5>BBQ Chicken Pizza</h5>
+                            <p>Grilled chicken, BBQ sauce, onions</p>
+                            <div class="price">$17.49</div>
+                        </div>
+                    </div>
+                    <div class="quantity-control">
+                        <button>-</button>
+                        <span>0</span>
+                        <button>+</button>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="d-flex align-items-center">
+                        <img src="z7.jpg" alt="Four Cheese Pizza">
+                        <div class="ms-3 menu-details">
+                            <h5>Four Cheese Pizza</h5>
+                            <p>Mozzarella, cheddar, parmesan, blue cheese</p>
+                            <div class="price">$18.99</div>
+                        </div>
+                    </div>
+                    <div class="quantity-control">
+                        <button>-</button>
+                        <span>0</span>
+                        <button>+</button>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <div class="d-flex align-items-center">
+                        <img src="z8.jpg" alt="Lasagna">
+                        <div class="ms-3 menu-details">
+                            <h5>Lasagna</h5>
+                            <p>Layers of pasta, beef, cheese, tomato sauce</p>
+                            <div class="price">$14.49</div>
+                        </div>
+                    </div>
+                    <div class="quantity-control">
+                        <button>-</button>
+                        <span>0</span>
+                        <button>+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        © 2025 FreshFeat. All rights reserved.
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
