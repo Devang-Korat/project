@@ -1,0 +1,142 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>Add Restaurant</title> 
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> 
+  <script src="https://cdn.tailwindcss.com"></script>
+  </head> 
+<body class="bg-gray-200"> 
+ 
+  <div class="max-w-xl mx-auto mt-10 bg-black p-6 rounded-lg shadow-lg text-white"> 
+    <h2 class="text-2xl font-bold mb-4 text-center">Add Restaurant</h2> 
+    <p class="text-center mb-6 text-gray-300">Form to enter restaurant information</p> 
+ 
+    <form id="restaurantForm" novalidate> 
+      <div class="mb-3"> 
+        <input type="text" id="restaurantName" class="form-control bg-gray-200 text-black" placeholder="Restaurant Name" required> 
+        <small id="restaurantNameError" class="text-red-500"></small> 
+      </div> 
+ 
+      <div class="mb-3"> 
+        <input type="text" id="ownerName" class="form-control bg-gray-200 text-black" placeholder="Owner Name" required> 
+        <small id="ownerNameError" class="text-red-500"></small> 
+      </div> 
+ 
+      <div class="mb-3"> 
+        <input type="tel" id="contactNumber" class="form-control bg-gray-200 text-black" placeholder="Contact Number" required> 
+        <small id="contactError" class="text-red-500"></small> 
+      </div> 
+ 
+      <div class="mb-3"> 
+        <input type="email" id="email" class="form-control bg-gray-200 text-black" placeholder="Email Address" required> 
+        <small id="emailError" class="text-red-500"></small> 
+      </div> 
+ 
+      <div class="mb-3"> 
+        <input type="text" id="state" class="form-control bg-gray-200 text-black" placeholder="State" required> 
+        <small id="stateError" class="text-red-500"></small> 
+      </div> 
+ 
+      <div class="mb-3"> 
+        <input type="text" id="city" class="form-control bg-gray-200 text-black" placeholder="City" required> 
+        <small id="cityError" class="text-red-500"></small> 
+      </div> 
+ 
+      <div class="mb-3"> 
+        <input type="text" id="pincode" class="form-control bg-gray-200 text-black" 
+placeholder="Pincode / ZIP Code" required> 
+        <small id="pincodeError" class="text-red-500"></small> 
+      </div> 
+ 
+      <div class="mb-4"> 
+        <label class="block mb-2 font-semibold">Upload Restaurant Image</label> 
+        <input type="file" id="restaurantImage" class="form-control bg-gray-200 text-black mb-2" accept="image/*"> 
+        <img id="previewImage" src="" alt="Preview" class="hidden w-full h-48 object-cover rounded-lg border"> 
+        <small id="imageError" class="text-red-500"></small> 
+      </div> 
+ 
+      <button type="submit" class="btn btn-warning w-full text-black font-semibold">Add Restaurant</button> 
+ 
+      <button type="button" onclick="window.history.back()" class="btn btn-secondary w-full mt-2">← Back</button> 
+    </form> 
+  </div> 
+ 
+  <script> 
+    document.getElementById("restaurantForm").addEventListener("submit", function 
+(event) { 
+      event.preventDefault(); 
+ 
+      document.querySelectorAll("small").forEach(el => el.textContent = ""); 
+ 
+      const restaurantName = document.getElementById("restaurantName").value.trim(); 
+      const ownerName = document.getElementById("ownerName").value.trim(); 
+      const contactNumber = document.getElementById("contactNumber").value.trim(); 
+      const email = document.getElementById("email").value.trim(); 
+      const state = document.getElementById("state").value.trim(); 
+      const city = document.getElementById("city").value.trim(); 
+      const pincode = document.getElementById("pincode").value.trim(); 
+      const image = document.getElementById("restaurantImage").files[0]; 
+ 
+      let isValid = true; 
+            if (restaurantName === "") { 
+        document.getElementById("restaurantNameError").textContent = "Restaurant name is required."; 
+        isValid = false; 
+      } 
+ 
+      if (ownerName === "") { 
+        document.getElementById("ownerNameError").textContent = "Owner name is required."; 
+        isValid = false; 
+      } 
+ 
+      const phonePattern = /^[0-9]{10}$/; 
+      if (contactNumber === "") { 
+        document.getElementById("contactError").textContent = "Contact number is required."; 
+        isValid = false; 
+      } else if (!phonePattern.test(contactNumber)) { 
+        document.getElementById("contactError").textContent = "Enter a valid 10-digit phone number."; 
+        isValid = false; 
+      } 
+ 
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/; 
+      if (email === "") { 
+        document.getElementById("emailError").textContent = "Email is required."; 
+        isValid = false; 
+      } else if (!emailPattern.test(email)) { 
+        document.getElementById("emailError").textContent = "Enter a valid email address."; 
+        isValid = false; 
+      } 
+ 
+      if (state === "") { 
+        document.getElementById("stateError").textContent = "State is required."; 
+        isValid = false; 
+      } 
+ 
+      if (city === "") { 
+        document.getElementById("cityError").textContent = "City is required."; 
+        isValid = false; 
+      }
+            const pinPattern = /^[0-9]{6}$/; 
+      if (pincode === "") { 
+        document.getElementById("pincodeError").textContent = "Pincode is required."; 
+        isValid = false; 
+      } else if (!pinPattern.test(pincode)) { 
+        document.getElementById("pincodeError").textContent = "Enter a valid 6-digit pincode."; 
+        isValid = false; 
+      } 
+ 
+      if (!image) { 
+        document.getElementById("imageError").textContent = "Please upload an image."; 
+        isValid = false; 
+      } 
+ 
+      if (isValid) { 
+        alert("Restaurant added successfully!"); 
+        document.getElementById("restaurantForm").reset(); 
+        previewImage.classList.add("hidden"); 
+      } 
+    }); 
+  </script> 
+</body> 
+</html> 

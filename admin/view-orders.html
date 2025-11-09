@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Orders | FreshFeat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        .navbar {
+            background-color: #0b0d17;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: #ffcc00 !important;
+            font-size: 1.7rem;
+            letter-spacing: 1px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff !important;
+            font-weight: 500;
+            margin: 0 12px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background-color: #ffcc00;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover::after,
+        .navbar-nav .nav-link.active::after {
+            width: 100%;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ffcc00 !important;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            padding-top: 80px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .summary-cards .card {
+            border: none;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .summary-cards .card:hover {
+            transform: translateY(-3px);
+        }
+
+        .summary-cards .card h4 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .summary-cards .card p {
+            margin: 0;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .card.blue {
+            background-color: #f0f7ff;
+            color: #0d6efd;
+        }
+
+        .card.green {
+            background-color: #eefdf3;
+            color: #198754;
+        }
+
+        .card.yellow {
+            background-color: #fffbe6;
+            color: #b8860b;
+        }
+
+        .card.red {
+            background-color: #fff0f0;
+            color: #dc3545;
+        }
+
+        .customer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ffcc00;
+            color: #000;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 10px;
+            text-transform: uppercase;
+        }
+
+        .restaurant-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 8px;
+        }
+
+        .filter-bar input,
+        .filter-bar select {
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        .filter-bar input:focus,
+        .filter-bar select:focus {
+            border-color: #ffcc00;
+            box-shadow: 0 0 4px rgba(255, 204, 0, 0.5);
+        }
+
+        .btn-yellow {
+            background-color: #ffcc00;
+            color: #000;
+            font-weight: 600;
+            border: none;
+        }
+
+        .btn-yellow:hover {
+            background-color: #e6b800;
+        }
+
+        .btn-green {
+            background-color: #198754;
+            color: white;
+            font-weight: 600;
+            border: none;
+        }
+
+        .btn-green:hover {
+            background-color: #157347;
+        }
+
+        .table-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .table th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-preparing {
+            background-color: rgba(13, 110, 253, 0.15);
+            color: #0d6efd;
+        }
+
+        .status-delivering {
+            background-color: rgba(13, 202, 240, 0.15);
+            color: #0dcaf0;
+        }
+
+        .status-delivered {
+            background-color: rgba(25, 135, 84, 0.15);
+            color: #198754;
+        }
+
+        .status-cancelled {
+            background-color: rgba(220, 53, 69, 0.15);
+            color: #dc3545;
+        }
+
+        .status-confirmed {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: #856404;
+        }
+
+        footer {
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="#">FreshFeat</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="view-restaurants.html">Restaurants</a></li>
+                    <li class="nav-item"><a class="nav-link" href="view-fooditem.html">Food Items</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="view-orders.html">Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="view-customers.html">Customers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="view-coupons.html">Coupons</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="page-header d-flex justify-content-between align-items-center flex-wrap">
+            <div>
+                <h3 class="fw-bold mb-1">Manage Orders</h3>
+                <p class="text-muted mb-0">Track and manage all orders across your platform.</p>
+            </div>
+            <div class="mt-3 mt-sm-0">
+                <button class="btn btn-green me-2">Export Orders</button>
+                <button class="btn btn-yellow">Generate Report</button>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="summary-cards d-flex flex-wrap gap-3 my-4">
+            <div class="card blue flex-grow-1">
+                <p>Total Orders Today</p>
+                <h4>147</h4>
+            </div>
+            <div class="card green flex-grow-1">
+                <p>Completed Orders</p>
+                <h4>134</h4>
+            </div>
+            <div class="card yellow flex-grow-1">
+                <p>Active Orders</p>
+                <h4>8</h4>
+            </div>
+            <div class="card red flex-grow-1">
+                <p>Cancelled Orders</p>
+                <h4>5</h4>
+            </div>
+        </div>
+
+        <!-- Orders Table -->
+        <div class="table-container">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>ORDER ID</th>
+                        <th>CUSTOMER</th>
+                        <th>RESTAURANT</th>
+                        <th>ITEMS</th>
+                        <th>TOTAL</th>
+                        <th>STATUS</th>
+                        <th>TIME</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#FH-2024-0157</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="customer-avatar">S</div>
+                                <div>
+                                    <strong>Samuel Green</strong><br>
+                                    <small class="text-muted">samuel@example.com</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td><img src="p1.jpg" class="restaurant-logo">Taco Fiesta</td>
+                        <td>2x Chicken Tacos<br>1x Nachos</td>
+                        <td>$24.60</td>
+                        <td><span class="status-badge status-delivered">Delivered</span></td>
+                        <td>3:05 PM</td>
+                        <td><a href="#" class="text-primary me-2">View</a> <a href="#" class="text-warning">Update</a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>#FH-2024-0158</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="customer-avatar">L</div>
+                                <div>
+                                    <strong>Linda Carter</strong><br>
+                                    <small class="text-muted">linda@example.com</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td><img src="p2.jpg" class="restaurant-logo">Sushi Express</td>
+                        <td>1x California Roll<br>1x Tempura Shrimp</td>
+                        <td>$33.25</td>
+                        <td><span class="status-badge status-preparing">Preparing</span></td>
+                        <td>3:22 PM</td>
+                        <td><a href="#" class="text-primary me-2">View</a> <a href="#" class="text-warning">Update</a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>#FH-2024-0159</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="customer-avatar">R</div>
+                                <div>
+                                    <strong>Ryan Cooper</strong><br>
+                                    <small class="text-muted">ryan@example.com</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td><img src="p3.jpg" class="restaurant-logo">Burger Junction</td>
+                        <td>2x Double Cheeseburger<br>1x Coke</td>
+                        <td>$28.10</td>
+                        <td><span class="status-badge status-delivering">Delivering</span></td>
+                        <td>2:50 PM</td>
+                        <td><a href="#" class="text-primary me-2">View</a> <a href="#" class="text-warning">Update</a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>#FH-2024-0160</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="customer-avatar">A</div>
+                                <div>
+                                    <strong>Amy Johnson</strong><br>
+                                    <small class="text-muted">amy@example.com</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td><img src="p4.jpg" class="restaurant-logo">Pizza Palace</td>
+                        <td>1x Veggie Pizza<br>1x Garlic Bread</td>
+                        <td>$26.90</td>
+                        <td><span class="status-badge status-confirmed">Confirmed</span></td>
+                        <td>4:10 PM</td>
+                        <td><a href="#" class="text-primary me-2">View</a> <a href="#" class="text-warning">Update</a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>#FH-2024-0161</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="customer-avatar">K</div>
+                                <div>
+                                    <strong>Kevin Lee</strong><br>
+                                    <small class="text-muted">kevin@example.com</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td><img src="p5.jpg" class="restaurant-logo">Curry Corner</td>
+                        <td>1x Butter Chicken<br>1x Garlic Naan</td>
+                        <td>$31.75</td>
+                        <td><span class="status-badge status-delivered">Delivered</span></td>
+                        <td>12:40 PM</td>
+                        <td><a href="#" class="text-primary me-2">View</a> <a href="#" class="text-warning">Update</a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>#FH-2024-0162</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="customer-avatar">M</div>
+                                <div>
+                                    <strong>Monica Bell</strong><br>
+                                    <small class="text-muted">monica@example.com</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td><img src="p6.jpg" class="restaurant-logo">Pasta House</td>
+                        <td>2x Alfredo Pasta<br>1x Garlic Bread</td>
+                        <td>$39.20</td>
+                        <td><span class="status-badge status-preparing">Preparing</span></td>
+                        <td>11:10 AM</td>
+                        <td><a href="#" class="text-primary me-2">View</a> <a href="#" class="text-warning">Update</a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>#FH-2024-0163</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="customer-avatar">D</div>
+                                <div>
+                                    <strong>Daniel Adams</strong><br>
+                                    <small class="text-muted">daniel@example.com</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td><img src="p.webp" class="restaurant-logo">Pizza Junction</td>
+                        <td>2x Cheese Burst Pizza</td>
+                        <td>$29.50</td>
+                        <td><span class="status-badge status-cancelled">Cancelled</span></td>
+                        <td>10:25 AM</td>
+                        <td><a href="#" class="text-primary me-2">View</a> <a href="#" class="text-warning">Update</a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>#FH-2024-0164</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="customer-avatar">E</div>
+                                <div>
+                                    <strong>Emma Stone</strong><br>
+                                    <small class="text-muted">emma@example.com</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td><img src="c.webp" class="restaurant-logo">Healthy Bites</td>
+                        <td>1x Grilled Chicken Salad<br>1x Smoothie</td>
+                        <td>$23.60</td>
+                        <td><span class="status-badge status-delivered">Delivered</span></td>
+                        <td>9:50 AM</td>
+                        <td><a href="#" class="text-primary me-2">View</a> <a href="#" class="text-warning">Update</a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>#FH-2024-0165</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="customer-avatar">N</div>
+                                <div>
+                                    <strong>Nathan Hill</strong><br>
+                                    <small class="text-muted">nathan@example.com</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td><img src="d.webp" class="restaurant-logo">Grill Hub</td>
+                        <td>2x BBQ Ribs<br>1x Coleslaw</td>
+                        <td>$44.90</td>
+                        <td><span class="status-badge status-confirmed">Confirmed</span></td>
+                        <td>3:15 PM</td>
+                        <td><a href="#" class="text-primary me-2">View</a> <a href="#" class="text-warning">Update</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        © 2024 FreshFeat Admin Panel. All rights reserved.
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

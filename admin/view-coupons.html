@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Coupons</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    .navbar {
+      background-color: #0b0d17;
+      padding: 15px 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: #ffcc00 !important;
+      font-size: 1.7rem;
+      letter-spacing: 1px;
+    }
+
+    .navbar-nav .nav-link {
+      color: #fff !important;
+      font-weight: 500;
+      margin: 0 12px;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .navbar-nav .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background-color: #ffcc00;
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover::after,
+    .navbar-nav .nav-link.active::after {
+      width: 100%;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: #ffcc00 !important;
+    }
+
+    body {
+      background-color: #f9fafb;
+      padding-top: 90px;
+    }
+
+    .page-header {
+      margin-bottom: 25px;
+    }
+
+    .summary-card {
+      border: none;
+      border-radius: 10px;
+      padding: 20px;
+      color: #333;
+      background: #fff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .summary-card h4 {
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .summary-card h2 {
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+
+    .summary-card small {
+      color: #777;
+    }
+
+    .coupon-card {
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      border: 1px solid #eee;
+      padding: 20px;
+      background: #fff;
+      transition: transform 0.2s ease;
+    }
+
+    .coupon-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .badge-status {
+      font-size: 0.75rem;
+      border-radius: 20px;
+      padding: 4px 10px;
+    }
+
+    .badge-active {
+      background-color: #e9f7ef;
+      color: #218838;
+    }
+
+    .badge-expired {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    .badge-scheduled {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    footer {
+      background-color: #0b0d17;
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+      font-size: 0.9rem;
+    }
+
+    .btn-warning {
+      background-color: #ffcc00 !important;
+      color: #000 !important;
+      border: none;
+    }
+
+    .btn-warning:hover {
+      background-color: #e6b800 !important;
+    }
+  </style>
+</head>
+
+<body>
+  <!--  Navbar  -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand" href="#">FreshFeat</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="view-restaurants.html">Restaurants</a></li>
+          <li class="nav-item"><a class="nav-link" href="view-fooditem.html">Food Items</a></li>
+          <li class="nav-item"><a class="nav-link" href="view-orders.html">Orders</a></li>
+          <li class="nav-item"><a class="nav-link" href="view-customers.html">Customers</a></li>
+          <li class="nav-item"><a class="nav-link active" href="view-coupons.html">Coupons</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!--  Page Content  -->
+  <div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+      <div>
+        <h3 class="fw-bold mb-1">Manage Coupons & Discounts</h3>
+        <p class="text-muted mb-0">Create and manage promotional coupons to boost sales.</p>
+      </div>
+      <a href="create_coupon.html" class="btn btn-warning fw-semibold shadow-sm px-4 py-2 rounded-3 mt-2 mt-md-0">
+        + Create New Coupon
+      </a>
+
+    </div>
+
+    <!--  Summary Cards  -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-3">
+        <div class="summary-card bg-primary bg-opacity-10">
+          <h4>Active Coupons</h4>
+          <h2>23</h2>
+          <small>Currently available</small>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="summary-card bg-success bg-opacity-10">
+          <h4>Total Redemptions</h4>
+          <h2>1,456</h2>
+          <small>This month</small>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="summary-card bg-purple bg-opacity-10" style="background-color:#f3e8ff;">
+          <h4>Discount Given</h4>
+          <h2>$12,340</h2>
+          <small>Total savings</small>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="summary-card bg-warning bg-opacity-10">
+          <h4>Revenue Impact</h4>
+          <h2>+18%</h2>
+          <small>Sales increase</small>
+        </div>
+      </div>
+    </div>
+
+    <!--  Filters  -->
+    <div class="d-flex gap-2 mb-4 flex-wrap">
+      <input type="text" class="form-control" placeholder="Search coupons by code or description...">
+      <select class="form-select w-auto">
+        <option>All Status</option>
+        <option>Active</option>
+        <option>Expired</option>
+        <option>Scheduled</option>
+      </select>
+      <select class="form-select w-auto">
+        <option>All Types</option>
+        <option>Percentage</option>
+        <option>Flat</option>
+        <option>Free Delivery</option>
+      </select>
+    </div>
+
+    <!--  Coupon Cards  -->
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="coupon-card">
+          <span class="badge-status badge-active">Active</span>
+          <div class="d-flex justify-content-between mt-2">
+            <strong>WELCOME20</strong>
+            <small class="text-muted">Used 234/500</small>
+          </div>
+          <p class="text-muted mb-2">20% off for new customers</p>
+          <p class="mb-1"><strong>Discount:</strong> 20%</p>
+          <p class="mb-1"><strong>Min Order:</strong> $25</p>
+          <p><strong>Expires:</strong> Dec 31, 2024</p>
+          <div class="d-flex gap-2">
+            <button class="btn btn-warning btn-sm fw-semibold">Edit</button>
+            <button class="btn btn-light btn-sm border">View</button>
+            <button class="btn btn-outline-danger btn-sm">🗑️</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="coupon-card">
+          <span class="badge-status badge-active">Active</span>
+          <div class="d-flex justify-content-between mt-2">
+            <strong>FREEDEL</strong>
+            <small class="text-muted">Used 89/200</small>
+          </div>
+          <p class="text-muted mb-2">Free delivery on orders over $30</p>
+          <p class="mb-1"><strong>Discount:</strong> Free Delivery</p>
+          <p class="mb-1"><strong>Min Order:</strong> $30</p>
+          <p><strong>Expires:</strong> Apr 30, 2024</p>
+          <div class="d-flex gap-2">
+            <button class="btn btn-warning btn-sm fw-semibold">Edit</button>
+            <button class="btn btn-light btn-sm border">View</button>
+            <button class="btn btn-outline-danger btn-sm">🗑️</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="coupon-card">
+          <span class="badge-status badge-active">Active</span>
+          <div class="d-flex justify-content-between mt-2">
+            <strong>PIZZA15</strong>
+            <small class="text-muted">Used 156/300</small>
+          </div>
+          <p class="text-muted mb-2">$15 off pizza orders over $50</p>
+          <p class="mb-1"><strong>Discount:</strong> $15</p>
+          <p class="mb-1"><strong>Min Order:</strong> $50</p>
+          <p><strong>Expires:</strong> May 15, 2024</p>
+          <div class="d-flex gap-2">
+            <button class="btn btn-warning btn-sm fw-semibold">Edit</button>
+            <button class="btn btn-light btn-sm border">View</button>
+            <button class="btn btn-outline-danger btn-sm">🗑️</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="coupon-card">
+          <span class="badge-status badge-scheduled">Scheduled</span>
+          <div class="d-flex justify-content-between mt-2">
+            <strong>SUMMER25</strong>
+            <small class="text-muted">Used 0/1000</small>
+          </div>
+          <p class="text-muted mb-2">25% off summer special menu</p>
+          <p class="mb-1"><strong>Discount:</strong> 25%</p>
+          <p class="mb-1"><strong>Min Order:</strong> $40</p>
+          <p><strong>Starts:</strong> Jun 1, 2024</p>
+          <div class="d-flex gap-2">
+            <button class="btn btn-warning btn-sm fw-semibold">Edit</button>
+            <button class="btn btn-light btn-sm border">View</button>
+            <button class="btn btn-outline-danger btn-sm">🗑️</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="coupon-card">
+          <span class="badge-status badge-expired">Expired</span>
+          <div class="d-flex justify-content-between mt-2">
+            <strong>VALENTINE</strong>
+            <small class="text-muted">Used 450/500</small>
+          </div>
+          <p class="text-muted mb-2">Valentine’s Day special discount</p>
+          <p class="mb-1"><strong>Discount:</strong> 30%</p>
+          <p class="mb-1"><strong>Min Order:</strong> $50</p>
+          <p><strong>Expired:</strong> Feb 14, 2024</p>
+          <div class="d-flex gap-2">
+            <button class="btn btn-warning btn-sm fw-semibold">Edit</button>
+            <button class="btn btn-light btn-sm border">View</button>
+            <button class="btn btn-outline-danger btn-sm">🗑️</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="coupon-card">
+          <span class="badge-status badge-active">Active</span>
+          <div class="d-flex justify-content-between mt-2">
+            <strong>BOGO50</strong>
+            <small class="text-muted">Used 67/100</small>
+          </div>
+          <p class="text-muted mb-2">Buy one get one 50% off</p>
+          <p class="mb-1"><strong>Discount:</strong> BOGO 50%</p>
+          <p class="mb-1"><strong>Min Order:</strong> $35</p>
+          <p><strong>Expires:</strong> Mar 31, 2024</p>
+          <div class="d-flex gap-2">
+            <button class="btn btn-warning btn-sm fw-semibold">Edit</button>
+            <button class="btn btn-light btn-sm border">View</button>
+            <button class="btn btn-outline-danger btn-sm">🗑️</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-4">
+      <small>Showing 1 to 6 of 23 coupons</small>
+      <nav>
+        <ul class="pagination pagination-sm mb-0">
+          <li class="page-item disabled"><a class="page-link">Previous</a></li>
+          <li class="page-item active"><a class="page-link bg-warning border-0 text-dark" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <footer>
+    © 2024 FoodieHub Admin Panel. All rights reserved.
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
